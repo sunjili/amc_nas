@@ -11,7 +11,7 @@ class DioClient implements HttpClient {
   }
 
   void _setup() {
-    print('初始化完成');
+    // ('初始化完成');
     _dio.interceptors.add(
       LogInterceptor(requestBody: true, responseBody: true),
     );

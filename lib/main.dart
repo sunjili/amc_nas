@@ -39,13 +39,13 @@ class _WebRTCClientPageState extends State<WebRTCClientPage> {
     // _initializeConnection();
   }
 
-  Future<void> _initializeConnection() async {
-    _webRTCManager = WebRTCManager(
-      onResponseUpdate: (message) => _updateStatus(message),
-    );
-    await _webRTCManager.initialize();
-    setState(() => _isConnecting = false);
-  }
+  // Future<void> _initializeConnection() async {
+  //   _webRTCManager = WebRTCManager(
+  //     onResponseUpdate: (message) => _updateStatus(message),
+  //   );
+  //   await _webRTCManager.initialize();
+  //   setState(() => _isConnecting = false);
+  // }
 
   void _updateStatus(String message) {
     if (mounted) setState(() => _response = message);

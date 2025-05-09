@@ -24,11 +24,11 @@ class WebRTCManager {
       // ICE候选处理
       _peerConnection!.onIceCandidate = (candidate) {
         // 实际应发送给远端
-        print('ICE Candidate: ${candidate.candidate}');
+        // print('ICE Candidate: ${candidate.candidate}');
       };
 
       _peerConnection!.onIceConnectionState = (state) {
-        print('ICE Connection State: $state');
+        // print('ICE Connection State: $state');
         if (state == RTCIceConnectionState.RTCIceConnectionStateConnected) {
           _isConnected = true;
         }

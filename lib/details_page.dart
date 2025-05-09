@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DetailsPage extends StatelessWidget {
   final int index;
+
   const DetailsPage({super.key, required this.index});
 
   @override
