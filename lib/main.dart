@@ -85,26 +85,29 @@ class _WebRTCClientPageState extends State<WebRTCClientPage> {
     // _isConnecting ? null : _webRTCManager.fetchData;
 
     var result = await AMCClient.post(
+      "/api/v1/verifications/sms?mobile=18612984620",
+      // data: {
+      //   "mobile": "18612984620"
+      // },
      // "/api/v1/verifications/sms/verify",
      //  data: {
      //   "mobile": "18612984620",
-     //    "code": "123456",
-      "/api/v1/users/register-with-device",
-      data: {
-        "userRegisterCmd": {
-          "nickname": "sssss",
-          "password": "string",
-          "mobile": "string",
-          "verifyCode": "123456",
-        },
-        "deviceAddCmd": {
-          "deviceName": "string",
-          "serialNumber": "string",
-          "ipAddress": "string",
-          "port": 0,
-          "macAddress": "string",
-        },
-      },
+      // "/api/v1/users/register-with-device",
+      // data: {
+      //   "userRegisterCmd": {
+      //     "nickname": "sssss",
+      //     "password": "string",
+      //     "mobile": "string",
+      //     "verifyCode": "123456",
+      //   },
+      //   "deviceAddCmd": {
+      //     "deviceName": "string",
+      //     "serialNumber": "string",
+      //     "ipAddress": "string",
+      //     "port": 0,
+      //     "macAddress": "string",
+      //   },
+      // },
     );
     _updateStatus(result.toString());
   }
