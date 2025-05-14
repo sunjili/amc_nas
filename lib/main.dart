@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 import 'client/client.dart';
-import 'webrtc_manager.dart';
+import 'demo/device_list_screen.dart';
 
 void main() => runApp(const MyApp());
 
@@ -29,9 +29,7 @@ class WebRTCClientPage extends StatefulWidget {
 }
 
 class _WebRTCClientPageState extends State<WebRTCClientPage> {
-  late WebRTCManager _webRTCManager;
   String _response = '';
-  bool _isConnecting = true;
 
   @override
   void initState() {
@@ -53,27 +51,35 @@ class _WebRTCClientPageState extends State<WebRTCClientPage> {
 
   @override
   void dispose() {
-    _webRTCManager.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('WebRTC Client')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
               onPressed: () => {onFetchData()},
-              child: Text(_isConnecting ? '连接中...' : '获取数据'),
+              child: Text('获取数据'),
             ),
             const SizedBox(height: 20),
             Text(
               '响应: $_response',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyLarge,
+            ),
+
+            ElevatedButton(
+              onPressed: () {
+                onScanDevice();
+              },
+              child: const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text('开始扫描设备', style: TextStyle(fontSize: 18)),
+              ),
             ),
           ],
         ),
@@ -82,16 +88,15 @@ class _WebRTCClientPageState extends State<WebRTCClientPage> {
   }
 
   Future<void> onFetchData() async {
-    // _isConnecting ? null : _webRTCManager.fetchData;
-
     var result = await AMCClient.post(
-      "/api/v1/verifications/sms?mobile=18612984620",
+      apiPath: "/api/v1/verifications/sms",
+      bodyParams: {"mobile": "18612984620"},
       // data: {
       //   "mobile": "18612984620"
       // },
-     // "/api/v1/verifications/sms/verify",
-     //  data: {
-     //   "mobile": "18612984620",
+      // "/api/v1/verifications/sms/verify",
+      //  data: {
+      //   "mobile": "18612984620",
       // "/api/v1/users/register-with-device",
       // data: {
       //   "userRegisterCmd": {
@@ -109,6 +114,33 @@ class _WebRTCClientPageState extends State<WebRTCClientPage> {
       //   },
       // },
     );
-    _updateStatus(result.toString());
+
+    // await AMCClient.devicePost(
+    //   deviceIp: "107069wbsd854.vicp.fun",
+    //   apiPath: "/api/v1.0/register",
+    //   bodyParams: {
+    //     "username": "13713706417",
+    //     "password": "123456",
+    //     "role": 1,
+    //     "create_time": "2025-04-17T03:10:59.969Z",
+    //   },
+    // );
+
+    String status;
+    debugPrint("sssss result.isSucess: ${result.isSuccess}");
+    if (result.isSuccess) {
+      status = result.data.toString(); // 这里的data是Map类型
+    } else {
+      status = result.error.toString();
+    }
+
+    _updateStatus(status);
+  }
+
+  onScanDevice() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const DeviceListScreen()),
+    );
   }
 }

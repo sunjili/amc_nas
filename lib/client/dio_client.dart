@@ -11,32 +11,37 @@ class DioClient implements HttpClient {
   }
 
   void _setup() {
-    // ('初始化完成');
     _dio.interceptors.add(
       LogInterceptor(requestBody: true, responseBody: true),
     );
   }
 
   @override
-  Future<dynamic> get(String url, {Map<String, dynamic>? params}) async {
+  Future<dynamic> get(
+    String url,
+    Map<String, dynamic>? bodyParams,
+    Map<String, dynamic>? headers,
+  ) async {
     final response = await _dio.get(
       url,
-      queryParameters: params,
-      options: Options(contentType: Headers.jsonContentType),
+      queryParameters: bodyParams,
+      options: Options(headers: headers, contentType: Headers.jsonContentType),
     );
 
     return response.data;
   }
 
   @override
-  Future post(String url, {data}) async {
+  Future<dynamic> post(
+    String url,
+    Map<String, dynamic>? bodyParams,
+    Map<String, dynamic>? headers,
+  ) async {
     final response = await _dio.post(
       url,
-      data: data,
-      options: Options(contentType: Headers.jsonContentType),
+      data: bodyParams,
+      options: Options(headers: headers, contentType: Headers.jsonContentType),
     );
     return response.data;
   }
-
-  // 其他方法实现...
 }
