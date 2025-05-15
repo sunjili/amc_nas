@@ -88,43 +88,45 @@ class _WebRTCClientPageState extends State<WebRTCClientPage> {
   }
 
   Future<void> onFetchData() async {
-    var result = await AMCClient.post(
-      apiPath: "/api/v1/verifications/sms",
-      bodyParams: {"mobile": "18612984620"},
-      // data: {
-      //   "mobile": "18612984620"
-      // },
-      // "/api/v1/verifications/sms/verify",
-      //  data: {
-      //   "mobile": "18612984620",
-      // "/api/v1/users/register-with-device",
-      // data: {
-      //   "userRegisterCmd": {
-      //     "nickname": "sssss",
-      //     "password": "string",
-      //     "mobile": "string",
-      //     "verifyCode": "123456",
-      //   },
-      //   "deviceAddCmd": {
-      //     "deviceName": "string",
-      //     "serialNumber": "string",
-      //     "ipAddress": "string",
-      //     "port": 0,
-      //     "macAddress": "string",
-      //   },
-      // },
-    );
-
-    // await AMCClient.devicePost(
-    //   deviceIp: "107069wbsd854.vicp.fun",
-    //   apiPath: "/api/v1.0/register",
-    //   bodyParams: {
-    //     "username": "13713706417",
-    //     "password": "123456",
-    //     "role": 1,
-    //     "create_time": "2025-04-17T03:10:59.969Z",
-    //   },
+    // var result = await AMCClient.post(
+    //   apiPath: "/api/v1/verifications/sms",
+    //   bodyParams: {"mobile": "18612984620"},
     // );
+    // "/api/v1/verifications/sms/verify",
+    //  data: {
+    //   "mobile": "18612984620",
+    // "/api/v1/users/register-with-device",
+    // data: {
+    //   "userRegisterCmd": {
+    //     "nickname": "sssss",
+    //     "password": "string",
+    //     "mobile": "string",
+    //     "verifyCode": "123456",
+    //   },
+    //   "deviceAddCmd": {
+    //     "deviceName": "string",
+    //     "serialNumber": "string",
+    //     "ipAddress": "string",
+    //     "port": 0,
+    //     "macAddress": "string",
+    //   },
+    // },
+    // );
+    // deviceIp: "107069wbsd854.vicp.fun:8800",
+    //
+    // http://107069wbsd854.vicp.fun:8800/api/v1.0/app_center_info.cgi
+    // deviceIp: "219.134.221.113:8800",
+    //
+    var result = await AMCClient.devicePost(
+      deviceIp: "107069wbsd854.vicp.fun:8800",
+      apiPath: "/api/v1.0/register.cgi",
+      bodyParams: {
+        "username": "13713716411",
+        "password": "123456",
+        "role": 0,
+        "create_time": "2025-04-17T03:10:59.969Z",
+      },
+    );
 
     String status;
     debugPrint("sssss result.isSucess: ${result.isSuccess}");
