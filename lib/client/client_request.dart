@@ -1,7 +1,7 @@
 // 定义抽象接口
 import 'package:dio/dio.dart';
 
-import 'client.dart';
+import 'client_result.dart';
 import 'network_config.dart';
 import 'network_error.dart';
 import 'network_utils.dart';
@@ -47,8 +47,9 @@ class ClientRequest {
         if (isSuccess) {
           return Result.success(rawResponse);
         } else {
-          final code = rawResponse['errCode'] ?? rawResponse['code'] ?? -1;
+          final code = rawResponse['code'] ?? rawResponse['errCode'] ?? -1;
           final message =
+              rawResponse['msg'] ??
               rawResponse['errorMessage'] ??
               rawResponse['message'] ??
               "unknown error message";
@@ -57,31 +58,31 @@ class ClientRequest {
           );
         }
       } else if (rawResponse is Response) {
-        if (rawResponse.statusCode == 200 || rawResponse.statusCode == 201) {
+        if (rawResponse.statusCode == 200) {
           return Result.success(rawResponse.data);
         } else {
           return Result.failure(
             NetworkError(
-              errorCode: rawResponse.statusCode ?? -1,
+              errorCode: rawResponse.statusCode.toString() ?? "-1",
               errorMessage: rawResponse.data,
             ),
           );
         }
       } else {
         return Result.failure(
-          NetworkError(errorCode: -2, errorMessage: "unknown data type"),
+          NetworkError(errorCode: "-2", errorMessage: "unknown data type"),
         );
       }
     } on DioException catch (e) {
       return Result.failure(
         NetworkError(
-          errorCode: e.response?.statusCode ?? -1,
+          errorCode: e.response?.statusCode.toString() ?? "-1",
           errorMessage: '网络错误 response: ${e.response} ；message:${e.message}',
         ),
       );
     } catch (e) {
       return Result.failure(
-        NetworkError(errorCode: -1, errorMessage: '发生异常: $e'),
+        NetworkError(errorCode: "-1", errorMessage: '发生异常: $e'),
       );
     }
   }
@@ -126,7 +127,7 @@ class ClientRequest {
 
   bool isResponseSuccess(Map<String, dynamic> rawResponse) {
     final bool isSuccess = rawResponse['success'] ?? false;
-    final int code = rawResponse['code'] ?? -1;
-    return isSuccess || code == 200;
+    final String code = rawResponse['code'] ?? "-1";
+    return code == "00000" || isSuccess;
   }
 }

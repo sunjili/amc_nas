@@ -41,6 +41,8 @@ dependencies:
   http: ^1.1.0
   dio: 5.8.0+1
   multicast_dns: ^0.3.3
+  dio_cookie_manager: ^3.1.1 # dio 的 cookie 管理器
+  cookie_jar: ^4.0.8 # cookie 存储实现
 
 dev_dependencies:
   flutter_test:

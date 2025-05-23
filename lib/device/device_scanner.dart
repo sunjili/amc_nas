@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:multicast_dns/multicast_dns.dart';
 
+import 'device_config.dart';
 import 'device_info.dart';
 
 class NasDeviceScanner {
@@ -35,9 +36,9 @@ class NasDeviceScanner {
                   ResourceRecordQuery.service(ptr.domainName),
                 )) {
               final String serviceName = ptr.domainName;
+              final String sn = ptr.hashCode.toString();
               final String target = srv.target;
               final int port = srv.port;
-
               InternetAddress? ipAddress;
               // 先尝试获取 IPv4 地址
               await for (final IPAddressResourceRecord ip in _client!
@@ -58,25 +59,20 @@ class NasDeviceScanner {
                 }
               }
 
-              final deviceMap = {
-                'serviceName': serviceName,
-                'target': target,
-                'port': port,
-                'ipAddress': ipAddress,
-              };
-              _devices.add(DeviceInfo.fromMap(deviceMap));
+              final deviceInfo = DeviceInfo(
+                serviceName: serviceName,
+                sn: sn,
+                target: target,
+                port: port,
+                ipAddress: ipAddress?.address ?? "",
+              );
+              _devices.add(deviceInfo);
             }
           },
           onDone: () {
             _isScanning = false;
             // 添加默认的设备地址
-            final defaultDeviceMap = {
-              'serviceName': 'AI NAS',
-              'target': 'Default Target',
-              'port': 8080,
-              'ipAddress': InternetAddress('192.168.0.1'),
-            };
-            _devices.add(DeviceInfo.fromMap(defaultDeviceMap));
+            _devices.add(DeviceConfig.defaultNasDevice);
             _callback?.call(_devices);
           },
         );
